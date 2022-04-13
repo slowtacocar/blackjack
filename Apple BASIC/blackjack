@@ -1,0 +1,104 @@
+10 DIM DV(21)
+20 DIM DS(21)
+30 DIM PV(21)
+40 DIM PS(21)
+50 DV(0) = INT(13 * RND(1)) + 1
+60 DS(0) = INT(4 * RND(1))
+65 DL = 1
+70 PV(0) = INT(13 * RND(1)) + 1
+80 PS(0) = INT(4 * RND(1))
+90 PV(1) = INT(13 * RND(1)) + 1
+100 PS(1) = INT(4 * RND(1))
+105 PL = 2
+110 PRINT "Dealer Hand:"
+120 GOSUB 700
+130 PRINT "Player Hand:"
+140 GOSUB 900
+150 INPUT "Hit? [y/n]: ";R$
+160 IF R$ = "y" GOTO 220
+170 IF R$ = "n" GOTO 330
+180 PRINT "Please type y or n."
+190 GOTO 150
+220 PV(PL) = INT(13 * RND(1)) + 1
+230 PS(PL) = INT(4 * RND(1))
+240 PL = PL + 1
+250 GOSUB 1200
+260 IF V > 21 GOTO 290
+270 GOTO 110
+290 PRINT "Player Hand:"
+300 GOSUB 900
+310 PRINT "You busted"
+320 GOSUB 570
+330 GOSUB 1100
+340 IF V < 17 GOTO 360
+350 GOTO 430
+360 DV(DL) = INT(13 * RND(1)) + 1
+370 DS(DL) = INT(4 * RND(1))
+380 DL = DL + 1
+390 PRINT "Dealer Hand:"
+400 GOSUB 700
+410 PRINT "The dealer hit."
+420 GOTO 330
+430 GOSUB 1100
+440 D = V
+450 GOSUB 1200
+460 P = V
+470 PRINT "Dealer Hand:"
+480 GOSUB 700
+490 IF D < 22 GOTO 520
+500 PRINT "The dealer busted."
+510 GOTO 570
+520 PRINT "Player Hand:"
+530 GOSUB 900
+540 IF D > P THEN PRINT "The dealer won."
+550 IF P > D THEN PRINT "You won."
+560 IF P = D THEN PRINT "You tied the dealer."
+570 INPUT "Play again? [y/n]: ";R$
+580 IF R$ = "y" GOTO 50
+590 IF R$ = "n" THEN END
+600 PRINT "Please type y or n."
+610 GOTO 570
+700 FOR I = 0 TO DL - 1
+710 SV$ = STR$(DV(I))
+720 IF DV(I) = 1 THEN SV$ = "Ace"
+730 IF DV(I) = 13 THEN SV$ = "King"
+740 IF DV(I) = 12 THEN SV$ = "Queen"
+750 IF DV(I) = 11 THEN SV$ = "Jack"
+760 IF DS(I) = 0 THEN SS$ = "Hearts"
+770 IF DS(I) = 1 THEN SS$ = "Spades"
+780 IF DS(I) = 2 THEN SS$ = "Clubs"
+790 IF DS(I) = 3 THEN SS$ = "Diamonds"
+800 PRINT " ";SV$;" of ";SS$
+810 NEXT I
+820 RETURN
+900 FOR I = 0 TO PL - 1
+910 SV$ = STR$(PV(I))
+920 IF PV(I) = 1 THEN SV$ = "Ace"
+930 IF PV(I) = 13 THEN SV$ = "King"
+940 IF PV(I) = 12 THEN SV$ = "Queen"
+950 IF PV(I) = 11 THEN SV$ = "Jack"
+960 IF PS(I) = 0 THEN SS$ = "Hearts"
+970 IF PS(I) = 1 THEN SS$ = "Spades"
+980 IF PS(I) = 2 THEN SS$ = "Clubs"
+990 IF PS(I) = 3 THEN SS$ = "Diamonds"
+1000 PRINT " ";SV$;" of ";SS$
+1010 NEXT I
+1020 RETURN
+1100 V = 0
+1110 A = 0
+1120 FOR I = 0 TO DL - 1
+1130 IF DV(I) > 10 THEN V = V + 10
+1140 IF DV(I) <= 10 THEN V = V + DV(I)
+1150 IF DV(I) = 1 THEN A = 1
+1160 NEXT I
+1170 IF A = 1 AND V < 12 THEN V = V + 10
+1180 RETURN
+1200 V = 0
+1210 A = 0
+1220 FOR I = 0 TO PL - 1
+1230 IF PV(I) > 10 THEN V = V + 10
+1240 IF PV(I) <= 10 THEN V = V + PV(I)
+1250 IF PV(I) = 1 THEN A = 1
+1260 NEXT I
+1270 IF A = 1 AND V < 12 THEN V = V + 10
+1280 RETURN
